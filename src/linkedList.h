@@ -16,8 +16,8 @@ public:
     void remove(int id);
     void update(int id, const std::string& name, int grade);
     linkedlist::Student* search(int id);
-    void loadFromFile(const std::string& filename);
-    void saveToFile(const std::string& filename);
+    void readFromFile(const std::string& filename);
+    void wiriteToFile(const std::string& filename);
 };
 
 #endif  // STUDENTSSTRUCT_H

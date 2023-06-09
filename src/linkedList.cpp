@@ -84,7 +84,7 @@ linkedlist::Student* LinkedList::search(int id) {
     return nullptr;
 }
 
-void LinkedList::loadFromFile(const std::string& filename) {
+void LinkedList::readFromFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cout << "Failed to open file: " << filename << std::endl;
@@ -95,7 +95,7 @@ void LinkedList::loadFromFile(const std::string& filename) {
     // ...
 }
 
-void LinkedList::saveToFile(const std::string& filename) {
+void LinkedList::wiriteToFile(const std::string& filename) {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cout << "Failed to open file: " << filename << std::endl;

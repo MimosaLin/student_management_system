@@ -20,11 +20,18 @@ namespace linkedlist {
     };
 }
 
+namespace queue {
+    struct Student {
+        std::string name;
+        int id;
+    };
+}
+
 namespace tree {
     struct Student {
         int id;
         string name;
-        int grade; // 年级信息
+        int grade;
         Student* left;
         Student* right;
     };

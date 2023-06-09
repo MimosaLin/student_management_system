@@ -2,18 +2,20 @@
 #include "tree.h"
 #include "linkedList.h"
 #include "SeqList.h"
+#include "queue.h"
 
 using namespace std;
 
 string filename = "D:\\learningDocs\\DataStructure\\student.txt"; // 替换为你的文件名
 
 void testOfSeqlist();
-void testOfLinkedist();
+void testOfLinkedList();
 void testOfTree();
+void testOfQueue();
 
 int main()
 {
-    testOfSeqlist();
+    testOfQueue();
 }
 
 void testOfTree() {
@@ -31,7 +33,7 @@ void testOfTree() {
     }
 }
 
-void testOfLinkedist() {
+void testOfLinkedList() {
     LinkedList list;
 
     // Inserting students
@@ -58,7 +60,7 @@ void testOfLinkedist() {
     list.remove(1);
 
     // Saving to file
-    list.saveToFile("students.txt");
+    list.wiriteToFile("students.txt");
 }
 
 void testOfSeqlist() {
@@ -85,4 +87,16 @@ void testOfSeqlist() {
 
     // write to file
     list.writeToFile(filename);
+}
+
+void testOfQueue(){
+    Queue q;
+
+    q.readFromFile(filename);
+
+    while (!q.isEmpty()) {
+        queue::Student student = q.dequeue();
+        std::cout << student.name << ' ' << student.id << '\n';
+    }
+
 }
