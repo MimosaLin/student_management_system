@@ -36,3 +36,11 @@ namespace tree {
         Student* right;
     };
 }
+
+namespace BinarySearchTree{
+    struct Student {
+        int id;
+        string name;
+        int score;
+    };
+}
