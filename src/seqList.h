@@ -17,6 +17,9 @@ public:
     void updateById(int id, seqlist::Student s);
     seqlist::Student* searchById(int id);
     void display();
+    seqlist::Student& operator[](int index);
+    int get_length();
+
 private:
     seqlist::Student data[MAXSIZE];
     int length;

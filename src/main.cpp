@@ -3,6 +3,7 @@
 #include "linkedList.h"
 #include "SeqList.h"
 #include "queue.h"
+#include"sort.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ void testOfSeqlist();
 void testOfLinkedList();
 void testOfTree();
 void testOfQueue();
+void test_sort(int i);
 
 int main()
 {
@@ -99,4 +101,43 @@ void testOfQueue(){
         std::cout << student.name << ' ' << student.id << '\n';
     }
 
+}
+
+
+void test_sort(int i)
+{
+    //²âÊÔÅÅÐòº¯Êý£¬0Îª²åÈëÅÅÐò£¬1Îª¿ìËÙÅÅÐò,2Îª¶ÑÅÅÐò
+    if (i == 0)
+    {
+        cout << "²åÈëÅÅÐò£º" << endl;
+        SeqList list;
+        list.readFromFile(filename);
+        list.display();
+        cout << "*******************************************" << endl;
+        insert_sort(list);
+        list.display();
+        cout << "*******************************************" << endl;
+    }
+    else if (i == 1)
+    {
+        cout << "¿ìËÙÅÅÐò£º" << endl;
+        SeqList list;
+        list.readFromFile(filename);
+        list.display();
+        cout << "*******************************************" << endl;
+        quick_sort(list, 0, list.get_length() - 1);
+        list.display();
+        cout << "*******************************************" << endl;
+    }
+    else if (i == 2)
+    {
+        cout << "¶ÑÅÅÐò£º" << endl;
+        SeqList list;
+        list.readFromFile(filename);
+        list.display();
+        cout << "*******************************************" << endl;
+        heap_sort(list);
+        list.display();
+        cout << "*******************************************" << endl;
+    }
 }

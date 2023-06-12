@@ -1,5 +1,5 @@
 #include "SeqList.h"
-
+#include <stdexcept>
 SeqList::SeqList() {
     length = 0;
 }
@@ -76,3 +76,16 @@ void SeqList::display() {
         cout << data[i].name << " " << data[i].id << " " << data[i].grade << endl;
     }
 }
+
+seqlist::Student& SeqList::operator[](int index) {
+    if (index < 0 || index >= length) {
+        throw std::out_of_range("Index out of range!");
+    }
+    return data[index];
+}
+
+int SeqList::get_length()
+{
+    return length;
+}
+
