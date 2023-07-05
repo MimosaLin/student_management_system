@@ -1,0 +1,6 @@
+Alice 1 95
+Bob 2 85
+Calvin 3 90
+David 4 92
+James 5 100
+Larry 6 91
