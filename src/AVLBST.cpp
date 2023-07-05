@@ -1,10 +1,10 @@
-﻿#include "BST.h"
+#include "AVLBST.h"
 
-BST::BST() {
+AVLBST::AVLBST() {
     root = nullptr;
 }
 
-TreeNode* BST::insertHelper(TreeNode* node, BSTree::Student student) {
+TreeNode* AVLBST::insertHelper(TreeNode* node, AVLBSTree::Student student) {
     if (node == nullptr) {
         node = new TreeNode;
         node->student = student;
@@ -20,7 +20,7 @@ TreeNode* BST::insertHelper(TreeNode* node, BSTree::Student student) {
     return node;
 }
 
-TreeNode* BST::deleteHelper(TreeNode* node, int score) {
+TreeNode* AVLBST::deleteHelper(TreeNode* node, int score) {
     if (node == nullptr) {
         return node;
     }
@@ -48,14 +48,14 @@ TreeNode* BST::deleteHelper(TreeNode* node, int score) {
     return node;
 }
 
-TreeNode* BST::findMin(TreeNode* node) {
+TreeNode* AVLBST::findMin(TreeNode* node) {
     while (node->left != nullptr) {
         node = node->left;
     }
     return node;
 }
 
-void BST::updateHelper(TreeNode* node, int score, int newScore) {
+void AVLBST::updateHelper(TreeNode* node, int score, int newScore) {
     if (node == nullptr) {
         return;
     }
@@ -70,7 +70,7 @@ void BST::updateHelper(TreeNode* node, int score, int newScore) {
     }
 }
 
-TreeNode* BST::searchHelper(TreeNode* node, int score) {
+TreeNode* AVLBST::searchHelper(TreeNode* node, int score) {
     if (node == nullptr || node->student.score == score) {
         return node;
     }
@@ -82,7 +82,7 @@ TreeNode* BST::searchHelper(TreeNode* node, int score) {
     }
 }
 
-void BST::inorderTraversalHelper(TreeNode* node) {
+void AVLBST::inorderTraversalHelper(TreeNode* node) {
     if (node != nullptr) {
         inorderTraversalHelper(node->left);
         std::cout << "ID: " << node->student.id << " Name: " << node->student.name << " Score: " << node->student.score << std::endl;
@@ -90,22 +90,22 @@ void BST::inorderTraversalHelper(TreeNode* node) {
     }
 }
 
-void BST::insert(BSTree::Student student) {
+void AVLBST::insert(AVLBSTree::Student student) {
     root = insertHelper(root, student);
 }
 
-void BST::remove(int score) {
+void AVLBST::remove(int score) {
     root = deleteHelper(root, score);
 }
 
-void BST::update(int score, int newScore) {
+void AVLBST::update(int score, int newScore) {
     updateHelper(root, score, newScore);
 }
 
-TreeNode* BST::search(int score) {
+TreeNode* AVLBST::search(int score) {
     return searchHelper(root, score);
 }
 
-void BST::inorderTraversal() {
+void AVLBST::inorderTraversal() {
     inorderTraversalHelper(root);
 }
