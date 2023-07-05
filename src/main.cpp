@@ -4,10 +4,9 @@
 #include "SeqList.h"
 #include "queue.h"
 #include"sort.h"
-#include"BST.h"
+#include"AVLBST.h"
 using namespace std;
 
- // 替换为你的文件名
 void testBST();
 void testOfSeqlist();
 void testOfLinkedList();
@@ -20,7 +19,7 @@ int main()
     cout << "1:queue 2:BST";
     int a;
     cin >> a;
-    if(a==1)
+    if (a == 1)
         testOfQueue();
     if (a == 2)
         testBST();
@@ -28,19 +27,19 @@ int main()
 }
 void testBST()
 {
-    BST bst;
-    // 从外部的txt文件读取数据
+    AVLBST bst;
+
     ifstream inputFile("BSTdata.txt");
     if (!inputFile) {
         cerr << "未能成功打开文件" << std::endl;
-        return ;
+        return;
     }
     while (1) {
         string line;
         while (getline(inputFile, line)) {
             stringstream ss(line);
             string token;
-            BSTree::Student student;
+            AVLBSTree::Student student;
             getline(ss, token, ',');
             student.id = stoi(token);
             getline(ss, token, ',');
@@ -72,17 +71,17 @@ void testBST()
             cin >> score;
 
             // 创建新的 Student 对象
-            BSTree::Student student;
+            AVLBSTree::Student student;
             student.id = id;
             student.name = name;
             student.score = score;
 
             // 调用 bst.insert() 插入学生信息到二叉搜索树中
             bst.insert(student);
-            ofstream outputFile("data.txt",ios::app);
+            ofstream outputFile("data.txt", ios::app);
             if (!outputFile) {
                 cerr << "未能成功打开文件" << endl;
-                return ;
+                return;
             }
             outputFile << student.id << "," << student.name << "," << student.score << endl;
             outputFile.close();
