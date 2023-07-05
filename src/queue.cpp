@@ -46,3 +46,7 @@ void Queue::writeToFile(const std::string& filename) const {
     }
     output.close();
 }
+
+int Queue::size() const {
+    return students.size();
+}
