@@ -1,37 +1,31 @@
 #pragma once
-#include <string>
 #include <iostream>
-#include <fstream>
-#include "studentsStruct.h"
+#include <vector>
+#include <string>
 
-using namespace std;
+struct MentorTreeNode {
+    int studentID;
+    int grade;
+    std::string studentName;
+    std::vector<MentorTreeNode*> children;
 
-// 前置声明
-class PeerTree;
-
-class PeerTree {
-private:
-    tree::Student* root;
-
-public:
-    PeerTree();
-
-    // 向树中插入学生信息
-    void insertStudent(const string& name, int id, int grade);
-
-    // 查询两个学生是否为直接或间接导生关系
-    bool isPeerRelationship(int id1, int id2);
-
-private:
-    // 在树中查找指定ID的学生
-    tree::Student* findStudent(tree::Student* current, int id);
-
-    // 判断两个学生是否为直接导生关系
-    bool isDirectPeer(tree::Student* student1, tree::Student* student2);
-
-    // 判断两个学生是否为间接导生关系
-    bool isIndirectPeer(tree::Student* student1, tree::Student* student2);
+    MentorTreeNode(int id, int grd, const std::string& name)
+        : studentID(id), grade(grd), studentName(name) {}
 };
 
-// 从Excel文件中读取学生信息，并构建树形结构
-PeerTree buildPeerTreeFromTxt(const string& filename);
+class PeerMentorshipTree {
+private:
+    MentorTreeNode* root;
+
+public:
+    PeerMentorshipTree();
+    ~PeerMentorshipTree();
+    void deleteTree(MentorTreeNode* node);
+    void insert(int studentID, int mentorID, int grade, const std::string& studentName);
+    MentorTreeNode* findNode(MentorTreeNode* currentNode, int studentID);
+    bool isDirectMentor(int mentorID, int studentID);
+    bool isIndirectMentor(int mentorID, int studentID, int maxGenerations);
+    bool isIndirectMentorHelper(MentorTreeNode* currentNode, MentorTreeNode* studentNode, int maxGenerations);
+};
+
+
