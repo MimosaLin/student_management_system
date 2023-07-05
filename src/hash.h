@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include<iostream>
 #include<vector>
 #include"studentsStruct.h"
@@ -7,7 +8,7 @@ struct hash_group
 {
 	seqlist::Student stu;
 	int seat_num;
-	bool flag=0;
+	bool flag = 0;
 };
 
 class Hash
