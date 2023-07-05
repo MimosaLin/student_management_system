@@ -7,6 +7,7 @@
 class Queue {
 public:
     Queue();
+    int size() const;
     ~Queue();
     void enqueue(const queue::Student& student);
     queue::Student dequeue();
