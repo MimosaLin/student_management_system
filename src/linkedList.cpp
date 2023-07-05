@@ -14,7 +14,36 @@ LinkedList::~LinkedList() {
         delete current;
     }
 }
+void LinkedList::readFromFile(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cout << "Failed to open file: " << filename << std::endl;
+        return;
+    }
 
+    // Read file and populate the linked list
+    std::string name;
+    int id;
+    int grade;
+    while (file >> name >> id >> grade) {
+        insert(name, id, grade);
+    }
+}
+
+void LinkedList::writeToFile(const std::string& filename) {
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        std::cout << "Failed to open file: " << filename << std::endl;
+        return;
+    }
+
+    // Write linked list to file
+    linkedlist::Student* current = head;
+    while (current) {
+        file << current->name << " " << current->id << " " << current->grade << "\n";
+        current = current->next;
+    }
+}
 void LinkedList::insert(const std::string& name, int id, int grade) {
     linkedlist::Student* newStudent = new linkedlist::Student;
     newStudent->name = name;
@@ -72,6 +101,13 @@ void LinkedList::update(int id, const std::string& name, int grade) {
         std::cout << "Student with ID " << id << " not found.\n";
     }
 }
+void LinkedList::display() {
+    linkedlist::Student* current = head;
+    while (current) {
+        std::cout << "Name: " << current->name << ", ID: " << current->id << ", Grade: " << current->grade << std::endl;
+        current = current->next;
+    }
+}
 
 linkedlist::Student* LinkedList::search(int id) {
     linkedlist::Student* current = head;
@@ -82,26 +118,4 @@ linkedlist::Student* LinkedList::search(int id) {
         current = current->next;
     }
     return nullptr;
-}
-
-void LinkedList::readFromFile(const std::string& filename) {
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Failed to open file: " << filename << std::endl;
-        return;
-    }
-
-    // Read file and populate the linked list
-    // ...
-}
-
-void LinkedList::wiriteToFile(const std::string& filename) {
-    std::ofstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Failed to open file: " << filename << std::endl;
-        return;
-    }
-
-    // Write linked list to file
-    // ...
 }
