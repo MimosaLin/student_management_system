@@ -37,7 +37,7 @@ namespace tree {
     };
 }
 
-namespace BinarySearchTree{
+namespace AVLBSTree{
     struct Student {
         int id;
         string name;
