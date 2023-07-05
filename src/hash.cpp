@@ -23,17 +23,17 @@ int Hash::hash_fun(seqlist::Student stu)
 	for (char c : name) {
 		index = index * 31 + c;
 	}
-	return index% capacity;
+	return index % capacity;
 }
 
-void Hash::insert(seqlist::Student stu,int seat)
+void Hash::insert(seqlist::Student stu, int seat)
 {
 	if (seat_number * 2 > capacity)update();
 	int index = hash_fun(stu);
 	hash_group temp;
 	temp.stu = stu;
 	temp.seat_num = seat;
-	
+
 	if (index < 0)index = -index;
 	while (seat_table[index].flag)
 	{
@@ -43,14 +43,14 @@ void Hash::insert(seqlist::Student stu,int seat)
 	seat_table[index] = temp;
 	seat_table[index].flag = 1;
 	seat_number++;
-	
+
 }
 
 hash_group Hash::search_seat(seqlist::Student stu)
 {
 	int index = hash_fun(stu);
 	if (index < 0)index = -index;
-	
+
 	while (seat_table[index].stu.id != stu.id)
 	{
 		index++;
@@ -61,7 +61,6 @@ hash_group Hash::search_seat(seqlist::Student stu)
 
 void Hash::update()
 {
-	cout << "进入更新函数" << endl;
 	int size = capacity;
 	capacity = capacity * 2;
 	hash_group* temp = new hash_group[capacity];
@@ -71,7 +70,7 @@ void Hash::update()
 		{
 			int index = hash_fun(seat_table[i].stu);
 			if (index < 0)index = -index;
-			cout << index << endl;
+			//cout << index << endl;
 			while (temp[index].flag)
 			{
 				index++;
@@ -91,6 +90,6 @@ void Hash::update()
 	{
 		seat_table[i] = temp[i];
 	}
-	delete[]temp; 
+	delete[]temp;
 	temp = nullptr;
 }
