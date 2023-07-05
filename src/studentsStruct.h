@@ -27,13 +27,12 @@ namespace queue {
     };
 }
 
-namespace tree {
+namespace Ntree {
     struct Student {
-        int id;
         string name;
+        int id;
         int grade;
-        Student* left;
-        Student* right;
+        
     };
 }
 
