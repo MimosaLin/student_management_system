@@ -1,128 +1,89 @@
-﻿#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
 #include "tree.h"
 
-using namespace std;
+PeerMentorshipTree::PeerMentorshipTree() : root(nullptr) {}
 
-PeerTree::PeerTree() {
-    root = nullptr;
+PeerMentorshipTree::~PeerMentorshipTree() {
+    deleteTree(root);
 }
 
-// 向树中插入学生信息
-void PeerTree::insertStudent(const string& name, int id,  int grade) {
-    tree::Student* newNode = new tree::Student;
-    newNode->id = id;
-    newNode->name = name;
-    newNode->grade = grade;
-    newNode->left = nullptr;
-    newNode->right = nullptr;
+void PeerMentorshipTree::deleteTree(MentorTreeNode* node) {
+    if (node == nullptr) {
+        return;
+    }
+    for (MentorTreeNode* child : node->children) {
+        deleteTree(child);
+    }
+    delete node;
+}
 
+void PeerMentorshipTree::insert(int studentID, int mentorID, int grade, const std::string& studentName) {
+    MentorTreeNode* newNode = new MentorTreeNode(studentID, grade, studentName);
     if (root == nullptr) {
         root = newNode;
     }
     else {
-        tree::Student* current = root;
-        while (true) {
-            if (id < current->id) {
-                if (current->left == nullptr) {
-                    current->left = newNode;
-                    break;
-                }
-                else {
-                    current = current->left;
-                }
-            }
-            else if (id > current->id) {
-                if (current->right == nullptr) {
-                    current->right = newNode;
-                    break;
-                }
-                else {
-                    current = current->right;
-                }
-            }
-            else {
-                // 若ID已存在，可以根据需要处理，这里简单忽略重复ID的情况
-                break;
-            }
+        MentorTreeNode* mentorNode = findNode(root, mentorID);
+        if (mentorNode != nullptr) {
+            mentorNode->children.push_back(newNode);
+        }
+        else {
+            std::cout << "未找到该学生 " << studentID << std::endl;
+            delete newNode;
         }
     }
 }
 
-// 查询两个学生是否为直接或间接导生关系
-bool PeerTree::isPeerRelationship(int id1, int id2){
-    tree::Student* student1 = findStudent(root, id1);
-    tree::Student* student2 = findStudent(root, id2);
-
-    if (student1 == nullptr || student2 == nullptr) {
-        return false; // 至少有一个学生不存在，不可能是导生关系
+MentorTreeNode* PeerMentorshipTree::findNode(MentorTreeNode* currentNode, int studentID) {
+    if (currentNode == nullptr) {
+        return nullptr;
     }
-
-    if (isDirectPeer(student1, student2)) {
-        return true; // 直接导生关系
+    if (currentNode->studentID == studentID) {
+        return currentNode;
     }
-
-    // 遍历查找间接导生关系
-    return isIndirectPeer(student1, student2);
+    for (MentorTreeNode* child : currentNode->children) {
+        MentorTreeNode* foundNode = findNode(child, studentID);
+        if (foundNode != nullptr) {
+            return foundNode;
+        }
+    }
+    return nullptr;
 }
 
-// 在树中查找指定ID的学生
-tree::Student* PeerTree::findStudent(tree::Student* current, int id) {
-    if (current == nullptr || current->id == id) {
-        return current;
-    }
-
-    if (id < current->id) {
-        return findStudent(current->left, id);
-    }
-    else {
-        return findStudent(current->right, id);
-    }
-}
-
-// 判断两个学生是否为直接导生关系
-bool PeerTree::isDirectPeer(tree::Student* student1, tree::Student* student2) {
-    return (student1->grade == student2->grade);
-}
-
-// 判断两个学生是否为间接导生关系
-bool PeerTree::isIndirectPeer(tree::Student* student1, tree::Student* student2) {
-    if (student1 == nullptr || student2 == nullptr) {
+bool PeerMentorshipTree::isDirectMentor(int mentorID, int studentID) {
+    MentorTreeNode* mentorNode = findNode(root, mentorID);
+    if (mentorNode == nullptr) {
+        std::cout << "未找到导师" << std::endl;
         return false;
     }
-
-    // 若两个学生年级不同，则继续在较高或较低年级的子树中查找
-    if (student1->grade < student2->grade) {
-        return isIndirectPeer(student1, student2->left) || isIndirectPeer(student1, student2->right);
+    for (MentorTreeNode* child : mentorNode->children) {
+        if (child->studentID == studentID) {
+            return true;
+        }
     }
-    else if (student1->grade > student2->grade) {
-        return isIndirectPeer(student1->left, student2) || isIndirectPeer(student1->right, student2);
-    }
-
-    // 若两个学生年级相同，则继续在同级子树中查找
-    return isIndirectPeer(student1->left, student2->left) || isIndirectPeer(student1->right, student2->right);
+    return false;
 }
 
-PeerTree buildPeerTreeFromTxt(const string& filename) {
-    PeerTree peerTree; ifstream file(filename); // 定义一个文件流对象
-    if (!file.is_open()) {
-        cout << "无法打开文件 " << filename << endl;
-        return peerTree;
+bool PeerMentorshipTree::isIndirectMentor(int mentorID, int studentID, int maxGenerations) {
+    MentorTreeNode* mentorNode = findNode(root, mentorID);
+    MentorTreeNode* studentNode = findNode(root, studentID);
+    if (mentorNode == nullptr || studentNode == nullptr) {
+        std::cout << "导师或学生未找到" << std::endl;
+        return false;
     }
+    return isIndirectMentorHelper(mentorNode, studentNode, maxGenerations);
+}
 
-    string line;
-    while (getline(file, line)) { // 逐行读取文件
-        // 解析每行数据
-        int id, grade;
-        string name;
-        istringstream stream(line); // 定义一个字符串流对象
-        stream >> name >> id >> grade; // 用空格分隔数据
-        peerTree.insertStudent(name, id, grade);
-        cout << name << endl << id << endl << grade << endl;
+bool PeerMentorshipTree::isIndirectMentorHelper(MentorTreeNode* currentNode, MentorTreeNode* studentNode, int maxGenerations) {
+    if (maxGenerations < 0) {
+        return false;
     }
-
-    file.close(); // 关闭文件
-    return peerTree;
+    if (currentNode == studentNode) {
+        return true;
+    }
+    for (MentorTreeNode* child : currentNode->children) {
+        if (isIndirectMentorHelper(child, studentNode, maxGenerations - 1)) {
+            return true;
+        }
+    }
+    return false;
 }
